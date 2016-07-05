@@ -168,23 +168,22 @@ private:
 	/// Parsed request. Some (format) settings origin from there.
 	ASTPtr parsed_query;
 
-	/// 
-	/// Последнее полученное от сервера исключение. Для кода возврата в неинтерактивном режиме.
+	/// Last received exception from server. For returning code in the non-interactive mode.
 	std::unique_ptr<Exception> last_exception;
 
-	/// Было ли в последнем запросе исключение.
+	/// Were there any exceptions in the previous request?
 	bool got_exception = false;
 
 	Stopwatch watch;
 
-	/// С сервера периодически приходит информация, о том, сколько прочитано данных за прошедшее время.
+	/// Information about how much data is read lately periodically comes from the server.
 	Progress progress;
 	bool show_progress_bar = false;
 
 	size_t written_progress_chars = 0;
 	bool written_first_block = false;
 
-	/// Информация о внешних таблицах
+	/// Information about external tables.
 	std::list<ExternalTable> external_tables;
 
 
@@ -205,7 +204,7 @@ private:
 		else if (Poco::File("/etc/clickhouse-client/config.xml").exists())
 			loadConfiguration("/etc/clickhouse-client/config.xml");
 
-		/// settings и limits могли так же быть указаны в кофигурационном файле, но уже записанные настройки имеют больший приоритет.
+		/// settings and limits could have been indicated in the configuration file, but the already registered settings are of high priority.
 #define EXTRACT_SETTING(TYPE, NAME, DEFAULT) \
 		if (config().has(#NAME) && !context.getSettingsRef().NAME.changed) \
 			context.setSetting(#NAME, config().getString(#NAME));
@@ -242,8 +241,8 @@ private:
 
  			std::cerr << "Code: " << e.code() << ". " << text << std::endl << std::endl;
 
-			/// Если есть стек-трейс на сервере, то не будем писать стек-трейс на клиенте.
-			/// Также не будем писать стек-трейс в случае сетевых ошибок.
+			/// If there is stack trace on the server, we're not going to print stack trace on client
+			/// Likewise we're not printing stack trace in cases of network errors.
 			if (print_stack_trace
 				&& e.code() != ErrorCodes::NETWORK_ERROR
 				&& std::string::npos == embedded_stack_trace_pos)
@@ -252,7 +251,7 @@ private:
 					<< e.getStackTrace().toString();
 			}
 
-			/// В случае нулевого кода исключения, надо всё-равно вернуть ненулевой код возврата.
+			/// In the case of zero exception code, it's necessary anyway to return a nonzero return code.
 			return e.code() ? e.code() : -1;
 		}
 		catch (const Poco::Exception & e)
