@@ -86,7 +86,7 @@
 #define SAVE_CURSOR_POSITION "\033[s"
 #define RESTORE_CURSOR_POSITION "\033[u"
 #define CLEAR_TO_END_OF_LINE "\033[K"
-/// Эти коды, возможно, поддерживаются не везде.
+/// These codes might not be supported everywhere.
 #define DISABLE_LINE_WRAPPING "\033[?7l"
 #define ENABLE_LINE_WRAPPING "\033[?7h"
 
@@ -129,14 +129,14 @@ private:
 		"q", "й", "\\q", "\\Q", "\\й", "\\Й", ":q", "Жй"
 	};
 
-	bool is_interactive = true;			/// Использовать readline интерфейс или batch режим.
-	bool need_render_progress = true;	/// Рисовать прогресс выполнения запроса.
-	bool print_time_to_stderr = false;	/// В неинтерактивном режиме, выводить время выполнения в stderr.
-	bool stdin_is_not_tty = false;		/// stdin - не терминал.
+	bool is_interactive = true;			/// Use readline interface or batch mode.
+	bool need_render_progress = true;	/// Draw the progress of the request.
+	bool print_time_to_stderr = false;	/// In the non-interactive mode, prints runtime to stderr.
+	bool stdin_is_not_tty = false;		/// stdin - not the terminal.
 
-	winsize terminal_size {};			/// Размер терминала - для вывода прогресс-бара.
+	winsize terminal_size {};			/// The terminal size - для вывода прогресс-бара.
 
-	std::unique_ptr<Connection> connection;	/// Соединение с БД.
+	std::unique_ptr<Connection> connection;	/// The connection to the database.
 	String query;						/// Текущий запрос.
 
 	String format;						/// Формат вывода результата в консоль.
