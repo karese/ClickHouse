@@ -137,21 +137,21 @@ private:
 	winsize terminal_size {};			/// The terminal size - для вывода прогресс-бара.
 
 	std::unique_ptr<Connection> connection;	/// The connection to the database.
-	String query;						/// Текущий запрос.
+	String query;						/// Current request.
 
-	String format;						/// Формат вывода результата в консоль.
-	size_t format_max_block_size = 0;	/// Максимальный размер блока при выводе в консоль.
-	String insert_format;				/// Формат данных для INSERT-а при чтении их из stdin в batch режиме
-	size_t insert_format_max_block_size = 0; /// Максимальный размер блока при чтении данных INSERT-а.
+	String format;						/// The output format of the result in the console.
+	size_t format_max_block_size = 0;	/// Maximum block size for output to the console.
+	String insert_format;				/// The data format for INSERT-а при чтении их из stdin в batch режиме
+	size_t insert_format_max_block_size = 0; /// Maximum block size при чтении данных INSERT-а.
 
-	bool has_vertical_output_suffix = false; /// \G указан в конце команды?
+	bool has_vertical_output_suffix = false; /// \G indicated at the end of the command?
 
 	Context context;
 
-	/// Чтение из stdin для batch режима
+	/// Reading from stdin for batch mode
 	ReadBufferFromFileDescriptor std_in {STDIN_FILENO};
 
-	/// Вывод в консоль
+	/// Output to console
 	WriteBufferFromFileDescriptor std_out {STDOUT_FILENO};
 	BlockOutputStreamPtr block_std_out;
 
@@ -159,15 +159,16 @@ private:
 
 	String current_profile;
 
-	/// Путь к файлу истории команд.
+	/// Path to the file with the command history.
 	String history_file;
 
-	/// Строк прочитано или записано.
+	/// Line is read or записано.
 	size_t processed_rows = 0;
 
-	/// Распарсенный запрос. Оттуда берутся некоторые настройки (формат).
+	/// Parsed request. Some (format) settings origin from there.
 	ASTPtr parsed_query;
 
+	/// 
 	/// Последнее полученное от сервера исключение. Для кода возврата в неинтерактивном режиме.
 	std::unique_ptr<Exception> last_exception;
 
