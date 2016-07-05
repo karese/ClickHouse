@@ -61,7 +61,7 @@
 
 /// Могут использоваться разные библиотеки для редактирования строк в зависимости от окружения.
 #ifdef USE_READLINE
-	#include <readline/readline.h>
+	#include <readline/readline.h> 
 	#include <readline/history.h>
 #elif USE_LIBEDIT
 	#include <editline/readline.h>
