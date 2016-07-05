@@ -272,12 +272,12 @@ private:
 	}
 
 
-	/// Стоит ли сделать хоть что-нибудь ради праздника.
+	/// Should there be done at least something for the sake of celebration.
 	bool isNewYearMode()
 	{
 		time_t current_time = time(0);
 
-		/// Плохо быть навязчивым.
+		/// It's bad to be intrusive.
 		if (current_time % 3 != 0)
 			return false;
 
@@ -289,11 +289,11 @@ private:
 
 	int mainImpl(const std::vector<std::string> & args)
 	{
-		/** Будем работать в batch режиме, если выполнено одно из следующих условий:
+		/** We'll be working in batch mode if one of the following conditions are met:
 		  * - задан параметр -e (--query)
-		  *   (в этом случае - запрос или несколько запросов берём оттуда;
-		  *    а если при этом stdin не терминал, то берём оттуда данные для INSERT-а первого запроса).
-		  * - stdin - не терминал (в этом случае, считываем оттуда запросы);
+		  *   (in that case - we'll take the request or some requests from there;
+		  *    but if stdin is nonterminal, then we'll take data from there for INSERT-a the first request).
+		  * - stdin is nonterminal (in that case we'll read the requests from there);
 		  */
 		stdin_is_not_tty = !isatty(STDIN_FILENO);
 		if (stdin_is_not_tty || config().has("query"))
@@ -328,10 +328,10 @@ private:
 			if (print_time_to_stderr)
 				throw Exception("time option could be specified only in non-interactive mode", ErrorCodes::BAD_ARGUMENTS);
 
-			/// Отключаем tab completion.
+			/// Disable tab completion.
 			rl_bind_key('\t', rl_insert);
 
-			/// Загружаем историю команд, если есть.
+			/// Load command history, if there is any.
 			if (config().has("history_file"))
 				history_file = config().getString("history_file");
 			else if (!home_path.empty())
@@ -347,7 +347,7 @@ private:
 						throwFromErrno("Cannot read history from file " + history_file, ErrorCodes::CANNOT_READ_HISTORY);
 #endif
 				}
-				else	/// Создаём файл с историей.
+				else	/// Create history file.
 					Poco::File(history_file).createFile();
 			}
 
