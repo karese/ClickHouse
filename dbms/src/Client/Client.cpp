@@ -59,7 +59,7 @@
 #include <DB/Common/NetException.h>
 
 
-/// Могут использоваться разные библиотеки для редактирования строк в зависимости от окружения.
+/// Different libraries can be used to edit the lines depending on the context.
 #ifdef USE_READLINE
 	#include <readline/readline.h> 
 	#include <readline/history.h>
