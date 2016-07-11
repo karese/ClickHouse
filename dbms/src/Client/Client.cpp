@@ -130,14 +130,14 @@ private:
 	};
 
 	bool is_interactive = true;			/// Use readline interface or batch mode.
-	bool need_render_progress = true;	/// Draw the progress of the request.
+	bool need_render_progress = true;	/// Draw the progress of the query.
 	bool print_time_to_stderr = false;	/// In the non-interactive mode, prints runtime to stderr.
 	bool stdin_is_not_tty = false;		/// stdin - not the terminal.
 
 	winsize terminal_size {};			/// The terminal size - для вывода прогресс-бара.
 
 	std::unique_ptr<Connection> connection;	/// The connection to the database.
-	String query;						/// Current request.
+	String query;						/// Current query.
 
 	String format;						/// The output format of the result in the console.
 	size_t format_max_block_size = 0;	/// Maximum block size for output to the console.
@@ -165,13 +165,13 @@ private:
 	/// Line is read or записано.
 	size_t processed_rows = 0;
 
-	/// Parsed request. Some (format) settings origin from there.
+	/// Parsed query. Some (format) settings origin from there.
 	ASTPtr parsed_query;
 
 	/// Last received exception from server. For returning code in the non-interactive mode.
 	std::unique_ptr<Exception> last_exception;
 
-	/// Were there any exceptions in the previous request?
+	/// Were there any exceptions in the previous query?
 	bool got_exception = false;
 
 	Stopwatch watch;
@@ -291,9 +291,9 @@ private:
 	{
 		/** We'll be working in batch mode if one of the following conditions are met:
 		  * - задан параметр -e (--query)
-		  *   (in that case - we'll take the request or some requests from there;
-		  *    but if stdin is nonterminal, then we'll take data from there for INSERT-a the first request).
-		  * - stdin is nonterminal (in that case we'll read the requests from there);
+		  *   (in that case - we'll take the query or some queries from there;
+		  *    but if stdin is nonterminal, then we'll take data from there for INSERT-a the first query).
+		  * - stdin is nonterminal (in that case we'll read the queries from there);
 		  */
 		stdin_is_not_tty = !isatty(STDIN_FILENO);
 		if (stdin_is_not_tty || config().has("query"))
@@ -351,7 +351,7 @@ private:
 					Poco::File(history_file).createFile();
 			}
 
-			/// Initiate DateLUT, so that the time spent won't be displayed as time spent on the request
+			/// Initiate DateLUT, so that the time spent won't be displayed as time spent on the query
 			DateLUT::instance();
 
 			loop();
@@ -420,8 +420,8 @@ private:
 	}
 
 
-	/** Test for cases where multiline requests are inserted into the terminal from the clipboard
-	  * Prevent execution of one query string until the whole request is inserted
+	/** Test for cases where multiline queries are inserted into the terminal from the clipboard
+	  * Prevent execution of one query string until the whole query is inserted
 	  */
 	static bool hasDataInSTDIN()
 	{
@@ -464,9 +464,9 @@ private:
 				if (query != prev_query)
 				{
 					// Replace line breaks with spaces, and then the following problem arises.
-					// Every line of the multiline request is saved separately in the history. If
+					// Every line of the multiline query is saved separately in the history. If
 					// you exit from client, enter again, and press the "up" key, then every line 
-					// of the multiline request is displayed separately, and not as a whole.
+					// of the multiline query is displayed separately, and not as a whole.
 					std::string logged_query = query;
 					std::replace(logged_query.begin(), logged_query.end(), '\n', ' ');
 					add_history(logged_query.c_str());
