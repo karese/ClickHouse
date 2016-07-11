@@ -497,8 +497,8 @@ private:
 						<< "Code: " << e.code() << ". " << e.displayText() << std::endl
 						<< std::endl;
 
-					/** Эксепшен на клиенте в процессе обработки запроса может привести к рассинхронизации соединения.
-					  * Установим соединение заново и позволим ввести следующий запрос.
+					/** Exception for client during query processing can lead to desynchronized connection.
+					  * Re-establish connection and allow typing of the next query.
 					  */
 					connect();
 				}
@@ -520,8 +520,8 @@ private:
 			line = config().getString("query");
 		else
 		{
-			/** В случае, если параметр query не задан, то запрос будет читаться из stdin.
-			  * При этом, запрос будет читаться не потоково (целиком в оперативку).
+			/** In case there's no given parameter query, the query will be deemed from stdin.
+			  * In that case, запрос будет читаться не потоково (целиком в оперативку).
 			  */
 
 			ReadBufferFromFileDescriptor in(STDIN_FILENO);
