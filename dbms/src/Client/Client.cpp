@@ -351,7 +351,7 @@ private:
 					Poco::File(history_file).createFile();
 			}
 
-			/// Инициализируем DateLUT, чтобы потраченное время не отображалось, как время, потраченное на запрос.
+			/// Initiate DateLUT, so that the time spent won't be displayed as time spent on the request
 			DateLUT::instance();
 
 			loop();
@@ -420,8 +420,8 @@ private:
 	}
 
 
-	/** Проверка для случая, когда в терминал вставляется многострочный запрос из буфера обмена.
-	  * Позволяет не начинать выполнение одной строчки запроса, пока весь запрос не будет вставлен.
+	/** Test for cases where multiline requests are inserted into the terminal from the clipboard
+	  * Prevent execution of one query string until the whole request is inserted
 	  */
 	static bool hasDataInSTDIN()
 	{
@@ -463,10 +463,10 @@ private:
 			{
 				if (query != prev_query)
 				{
-					// Заменяем переводы строк на пробелы, а то возникает следуцющая проблема.
-					// Каждая строчка многострочного запроса сохраняется в истории отдельно. Если
-					// выйти из клиента и войти заново, то при нажатии клавиши "вверх" выводится не
-					// весь многострочный запрос, а каждая его строчка по-отдельности.
+					// Replace line breaks with spaces, and then the following problem arises.
+					// Every line of the multiline request is saved separately in the history. If
+					// you exit from client, enter again, and press the "up" key, then every line 
+					// of the multiline request is displayed separately, and not as a whole.
 					std::string logged_query = query;
 					std::replace(logged_query.begin(), logged_query.end(), '\n', ' ');
 					add_history(logged_query.c_str());
@@ -484,7 +484,7 @@ private:
 
 				try
 				{
-					/// Выясняем размер терминала.
+					/// Specify terminal size.
 					ioctl(0, TIOCGWINSZ, &terminal_size);
 
 					if (!process(query))
